@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby1.9
+require 'readline'
+
+# echo (Dir['*'] - Dir['*.rb'])
+
+# Store the state of the terminal
+stty_save = `stty -g`.chomp
+
+$alias_hash = {'ls' => 'ls --color=auto'}
+#class Cmd < Object
+#  def method_missing msg, *args, &block
+#    ::Kernel.send(:`, "#{msg} #{args.join(' ')}")
+#  end
+#end
+
+class Object
+  def to_cmd
+    if self.kind_of? Array
+      return self.join ' '
+    else
+      return self.to_s
+    end
+  end
+end
+
+$ls = Dir['*']
+class << $ls
+  def [] arg
+    Dir[arg]
+  end
+end
+
+def translate line
+  ls = $ls
+
+  nested = /(\{[^\{\}]*\})/
+  if line =~ nested
+    translate(line.sub(nested, eval($1[1..-2]).to_cmd))
+  else
+    line
+  end
+end
+
+def read
+  line = Readline.readline('> ', true)
+  return nil if line.nil?
+  if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
+    Readline::HISTORY.pop
+  end
+  line
+end
+
+def go line
+  begin
+    if line != '' && $alias_hash.has_key?(line.split(' ')[0])
+      splitted = line.split(' ')
+      splitted[0] = $alias_hash[splitted[0]]
+      line = splitted.join ' '
+    end
+    #puts line
+    system translate(line).gsub("\n", ' ')
+  #rescue
+  #  puts 'Syntax error'
+  end
+end
+
+Readline.completion_append_character = " "
+Readline.completion_proc = Readline::FILENAME_COMPLETION_PROC
+Readline.basic_word_break_characters = ''
+# Readline.completion_proc = Proc.new {|l| p l }
+# p Readline.methods - Object.methods
+
+begin
+  while line = read
+    if line =~ /^(?<p>[^\{\}]*(\{\g<p>*\})*)*$/
+      go line
+    else
+      puts 'Unbalanced parentheses.'
+    end
+  end
+rescue Interrupt => e
+  system('stty', stty_save) # Restore
+  exit
+end
+

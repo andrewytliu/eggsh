@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+require 'readline'
+
+# Store the state of the terminal
+stty_save = `stty -g`.chomp
+
+class Cmd
+  def [](arg)
+    Dir[arg]
+  end
+
+  def to_s
+    Dir['*'].join ' '
+  end
+
+  def self.to_a
+    Dir['*']
+  end
+end
+
+ls = Dir['*']
+class << ls
+  def [](arg)
+    Dir[arg]
+  end
+end
+
+def eval_part(line)
+  #ls = Cmd.new
+  str = eval(line[1..-2]) unless line.empty?
+  # p str
+  str = str.join ' ' if str.kind_of? Array
+  ((str) ? str.to_s : "")
+  puts "Evaled: #{str}"
+end
+
+def translate(line)
+  eval_str, result, count = "", "", 0
+  for i in line.split ''
+    count += 1 if i == '{'
+    if count == 0
+      result += eval_part(eval_str) + i
+      eval_str = ''
+    else
+      eval_str += i
+    end
+    count -= 1 if i == '}'
+  end
+  result += eval_part(eval_str).to_s
+  result
+end
+
+def read
+  line = Readline.readline('> ', true)
+  return nil if line.nil?
+  if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
+    Readline::HISTORY.pop
+  end
+  line
+end
+
+Readline.completion_append_character = " "
+Readline.completion_proc = Readline::FILENAME_COMPLETION_PROC
+Readline.basic_word_break_characters = ''
+# Readline.completion_proc = Proc.new {|l| p l }
+# p Readline.methods - Object.methods
+
+begin
+  while line = read
+    system translate(line)
+  end
+rescue Interrupt => e
+  system('stty', stty_save) # Restore
+  exit
+end
+
