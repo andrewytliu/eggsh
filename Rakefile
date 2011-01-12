@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "eggsh"
   gem.homepage = "http://github.com/eggegg/eggsh"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{An interactive shell with Ruby power}
+  gem.description = %Q{Use Ruby expressions instead of unfriendly shell script}
   gem.email = "andrewliu33@gmail.com"
   gem.authors = ["Andrew Liu"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
