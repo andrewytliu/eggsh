@@ -8,28 +8,13 @@ module Eggsh
     SHELL_CMD = {'cd' => :cd, 'pwd' => :pwd, 'fullpwd' => :full_pwd}
 
     def initialize
+      @env = ENV.to_hash
       @pwd = ENV['PWD']
       @translator = Eggsh::Translator.new
     end
 
-    def pwd arg
-      short = @pwd.split['/']
-      (0...short.size).each {|i| short[i] = short[i][0]}
-      puts short.join '/'
-    end
-
-    def full_pwd arg
-      puts @pwd
-    end
-
-    def cd arg
-      new_path = @pwd + arg.split(' ')[1]
-      if File.directory? new_path
-        @pwd = new_path
-        ENV['PATH'] = new_path
-      else
-        puts 'Invalid path'
-      end
+    def env
+      @env
     end
 
     def exec line
@@ -44,10 +29,34 @@ module Eggsh
         if line != '' && SHELL_CMD.has_key?(line.split(' ')[0])
           send(SHELL_CMD[line.split(' ')[0]], line)
         else
-          system @translator.translate(line).gsub("\n", ' ')
+          begin
+            spawn(@env, @translator.translate(line).gsub("\n", ' '), :chdir => @pwd)
+          rescue Errno::ENOENT => e
+            puts e.display
+          end
         end
       #rescue
       #  puts 'Syntax error'
+      end
+    end
+
+  private
+    def pwd arg
+      short = @pwd.split '/'
+      (0...(short.size - 1)).each {|i| short[i] = short[i][0]}
+      puts short.join '/'
+    end
+
+    def full_pwd arg
+      puts @pwd
+    end
+
+    def cd arg
+      new_path = File.expand_path arg.split(' ')[1], @pwd
+      if File.directory? new_path
+        @pwd = new_path
+      else
+        puts "cd: Invalid path #{arg.split(' ')[1]}"
       end
     end
   end

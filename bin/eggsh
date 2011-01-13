@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../lib/runner'
-
 if RUBY_VERSION < '1.9'
   puts 'Ruby interpreter version 1.9 is needed!'
   exit
 end
+
+require File.dirname(__FILE__) + '/../lib/runner'
 
 # Store the state of the terminal
 stty_save = `stty -g`.chomp
