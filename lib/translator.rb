@@ -1,4 +1,4 @@
-require 'ls'
+require_relative 'ls'
 
 module Eggsh
   class Translator

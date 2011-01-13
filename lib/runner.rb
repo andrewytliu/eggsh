@@ -1,6 +1,6 @@
-require 'shell'
+require_relative 'shell'
+require_relative 'util'
 require 'readline'
-require 'util'
 
 module Eggsh
   class Runner

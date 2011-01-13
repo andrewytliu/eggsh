@@ -1,3 +1,5 @@
+require_relative 'translator'
+
 # temprerary put here
 $alias_hash = {'ls' => 'ls --color=auto'}
 
@@ -6,6 +8,7 @@ module Eggsh
 
     def initialize
       @pwd = '~'
+      @translator = Eggsh::Translator.new
     end
 
     def pwd
@@ -26,7 +29,7 @@ module Eggsh
           line = splitted.join ' '
         end
         #puts line
-        system translate(line).gsub("\n", ' ')
+        system @translator.translate(line).gsub("\n", ' ')
       #rescue
       #  puts 'Syntax error'
       end
