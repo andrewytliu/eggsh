@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby1.9
+
+require File.dirname(__FILE__) + '/../lib/runner'
+
+# Store the state of the terminal
+stty_save = `stty -g`.chomp
+
+begin
+  Eggsh::Runner.new.run!
+rescue Interrupt => e
+  system('stty', stty_save) # Restore
+  exit
+end
+
