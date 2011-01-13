@@ -9,9 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Liu"]
-  s.date = %q{2011-01-12}
+  s.date = %q{2011-01-13}
+  s.default_executable = %q{eggsh}
   s.description = %q{Use Ruby expressions instead of unfriendly shell script}
   s.email = %q{andrewliu33@gmail.com}
+  s.executables = ["eggsh"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -19,11 +21,18 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "lib/eggsh.rb",
+    "bin/eggsh",
+    "eggsh.gemspec",
+    "lib/ls.rb",
+    "lib/runner.rb",
+    "lib/shell.rb",
+    "lib/translator.rb",
+    "lib/util.rb",
     "test/helper.rb",
     "test/test_eggsh.rb"
   ]
