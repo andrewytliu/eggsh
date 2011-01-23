@@ -27,11 +27,13 @@ module Eggsh
           line = splitted.join ' '
         end
         #puts line
-        if line != '' && SHELL_CMD.has_key?(line.split(' ')[0])
+        if !line.empty? && SHELL_CMD.has_key?(line.split(' ')[0])
           send(SHELL_CMD[line.split(' ')[0]], line)
+        elsif line.empty?
         else
           begin
             spawn(@env, @translator.translate(line).gsub("\n", ' '), :chdir => @pwd)
+            Process.wait
           rescue Errno::ENOENT => e
             puts e.display
           end
