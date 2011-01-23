@@ -5,7 +5,8 @@ $alias_hash = {'ls' => 'ls --color=auto'}
 
 module Eggsh
   class Shell
-    SHELL_CMD = {'cd' => :cd, 'pwd' => :pwd, 'fullpwd' => :full_pwd}
+    SHELL_CMD = {'cd' => :cd, 'pwd' => :pwd, 'fullpwd' => :full_pwd,
+                 'quit' => :quit, 'exit' => :quit}
 
     def initialize
       @env = ENV.to_hash
@@ -58,6 +59,10 @@ module Eggsh
       else
         puts "cd: Invalid path #{arg.split(' ')[1]}"
       end
+    end
+
+    def quit arg
+      exit
     end
   end
 end
