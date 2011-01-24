@@ -8,7 +8,7 @@ class Object
     end
   end
 
-  # define to_color for terminal output
+  # color code for colorful terminal output
   COLOR_CODE = {
     :black => '30', :red => '31', :green => '32', :yellow => '33', :blue => '34',
     :purple => '35', :cyan => '36', :white => '37', :bold_black => '1;30',
@@ -17,6 +17,7 @@ class Object
     :bold_white => '1;37'
   }
 
+  # define to_color for terminal output
   def to_color color
     "\x1b[#{COLOR_CODE[color]}m#{to_s}\x1b[m"
   end

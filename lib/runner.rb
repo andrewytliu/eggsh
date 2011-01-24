@@ -3,9 +3,13 @@ require_relative 'util'
 require 'readline'
 
 module Eggsh
+  # the path of rc file
+  RC_PATH = '~/.eggshrc'
+
   class Runner
     def initialize
       @shell = Eggsh::Shell.new
+      load_rc
     end
 
     def run!
@@ -22,6 +26,8 @@ module Eggsh
       end
     end
 
+  private
+    # read a single line by readline
     def read
       line = Readline.readline(@shell.prompt, true)
       return nil if line.nil?
@@ -29,6 +35,14 @@ module Eggsh
         Readline::HISTORY.pop
       end
       line
+    end
+
+    # load rc file from ~/.eggshrc
+    def load_rc
+      path = File.expand_path RC_PATH
+      if File.exist? path
+        eval(IO.read path)
+      end
     end
   end
 end

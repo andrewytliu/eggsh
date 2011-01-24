@@ -1,12 +1,13 @@
 require_relative 'translator'
 
-# temprerary put here
-$alias_hash = {'ls' => 'ls --color=auto'}
-
 module Eggsh
   class Shell
+    # mapping from shell commands to member function
     SHELL_CMD = {'cd' => :cd, 'pwd' => :pwd, 'fullpwd' => :full_pwd,
                  'quit' => :quit, 'exit' => :quit}
+
+    # alias hash for command alias
+    ALIAS = {'ls' => 'ls --color=auto'}
 
     def initialize
       @env = ENV.to_hash
@@ -14,20 +15,18 @@ module Eggsh
       @translator = Eggsh::Translator.new
     end
 
-    def env
-      @env
-    end
-
+    # generating prompt
     def prompt
       "#{pwd.to_color(:bold_green)}$ "
     end
 
+    # handling a single line
     def exec line
       begin
         # alias first
-        if line != '' && $alias_hash.has_key?(line.split(' ')[0])
+        if line != '' && ALIAS.has_key?(line.split(' ')[0])
           splitted = line.split(' ')
-          splitted[0] = $alias_hash[splitted[0]]
+          splitted[0] = ALIAS[splitted[0]]
           line = splitted.join ' '
         end
 
