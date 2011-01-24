@@ -18,6 +18,10 @@ module Eggsh
       @env
     end
 
+    def prompt
+      "#{pwd}> "
+    end
+
     def exec line
       begin
         # alias first
@@ -26,9 +30,10 @@ module Eggsh
           splitted[0] = $alias_hash[splitted[0]]
           line = splitted.join ' '
         end
-        #puts line
+
         if !line.empty? && SHELL_CMD.has_key?(line.split(' ')[0])
-          send(SHELL_CMD[line.split(' ')[0]], line)
+          msg = send(SHELL_CMD[line.split(' ')[0]], line)
+          puts msg if msg
         elsif line.empty?
         else
           begin
@@ -38,32 +43,31 @@ module Eggsh
             puts e.display
           end
         end
-      #rescue
-      #  puts 'Syntax error'
       end
     end
 
   private
-    def pwd arg
+    def pwd arg = ''
       short = @pwd.split '/'
       (0...(short.size - 1)).each {|i| short[i] = short[i][0]}
-      puts short.join '/'
+      short.join '/'
     end
 
-    def full_pwd arg
-      puts @pwd
+    def full_pwd arg = ''
+      @pwd
     end
 
-    def cd arg
+    def cd arg = '.'
       new_path = File.expand_path arg.split(' ')[1], @pwd
       if File.directory? new_path
         @pwd = new_path
+        return nil
       else
-        puts "cd: Invalid path #{arg.split(' ')[1]}"
+        return "cd: Invalid path #{arg.split(' ')[1]}"
       end
     end
 
-    def quit arg
+    def quit arg = ''
       exit
     end
   end

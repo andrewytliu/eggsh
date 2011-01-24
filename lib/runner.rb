@@ -23,7 +23,7 @@ module Eggsh
     end
 
     def read
-      line = Readline.readline('> ', true)
+      line = Readline.readline(@shell.prompt, true)
       return nil if line.nil?
       if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
         Readline::HISTORY.pop
