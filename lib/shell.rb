@@ -19,7 +19,7 @@ module Eggsh
     end
 
     def prompt
-      "#{pwd}> "
+      "#{pwd.to_color(:bold_green)}$ "
     end
 
     def exec line
