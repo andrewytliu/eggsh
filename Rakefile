@@ -26,11 +26,9 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
+desc 'Run tests'
+task :test do
+  sh 'bacon -Itest --automatic'
 end
 
 require 'rcov/rcovtask'
