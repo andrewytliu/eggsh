@@ -18,14 +18,14 @@ line environment, things will be much easier:
 
 == Usage
 
-Ruby 1.9 interpreter is required.
-
   gem install eggsh
 
 Call 'eggsh' to start the shell.
 Settings of the shell are placed under ~/.eggshrc.
 
-{} brackets are used to evaluate ruby expressions.
+{  } brackets are used to evaluate ruby expressions.
+{> } brackets are used to evaluate ruby expressions, too, except for the output
+will not be executed.
 
 == Example
 
