@@ -7,12 +7,7 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'test/unit'
-require 'shoulda'
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'eggsh'
+require 'bacon'
+Dir[File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', '*.rb'))].each {|f| require f }
 
-class Test::Unit::TestCase
-end
