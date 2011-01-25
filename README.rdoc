@@ -11,10 +11,10 @@ do this in base:
 
 The solution is not so obvious , and it requires the knowledge of the tools like
 grep, sed, awk, xargs ... etc.  If ruby expressions are available in the command
-line environment, things will be much easy:
+line environment, things will be much easier:
 
   rm -rf { ls['*'] - ls['*.c'] }
-  // ruby expression inside {}
+  # ruby expression inside {}
 
 == Usage
 
