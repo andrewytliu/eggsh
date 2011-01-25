@@ -21,7 +21,7 @@ module Eggsh
         if line =~ /^(?<p>[^\{\}]*(\{\g<p>*\})*)*$/
           @shell.exec line
         else
-          puts 'Unbalanced parentheses.'
+          puts 'eggsh: Unbalanced parentheses'
         end
       end
     end

@@ -38,7 +38,7 @@ module Eggsh
           begin
             spawn(@env, @translator.translate(line).gsub("\n", ' '), :chdir => @pwd)
             Process.wait
-          rescue Errno::ENOENT => e
+          rescue Exception => e
             puts e.display
           end
         end
