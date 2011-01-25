@@ -1,4 +1,6 @@
-require_relative 'translator'
+require 'rubygems'
+require 'sfl'
+require File.expand_path('../translator.rb', __FILE__)
 
 module Eggsh
   class Shell
@@ -36,8 +38,11 @@ module Eggsh
         elsif line.empty?
         else
           begin
-            spawn(@env, @translator.translate(line).gsub("\n", ' '), :chdir => @pwd)
-            Process.wait
+            shell_line = @translator.translate(line)
+            unless shell_line.empty?
+              Kernel.spawn(@env, shell_line, :chdir => @pwd)
+              Process.wait
+            end
           rescue Exception => e
             puts e.display
           end
@@ -47,8 +52,8 @@ module Eggsh
 
   private
     def pwd arg = ''
-      short = @pwd.split '/'
-      (0...(short.size - 1)).each {|i| short[i] = short[i][0]}
+      short = @pwd.sub(/^#{ENV['HOME']}/, '~').split '/'
+      (0...(short.size - 1)).each {|i| short[i] = short[i][0..0]}
       short.join '/'
     end
 

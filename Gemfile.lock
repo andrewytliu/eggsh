@@ -10,6 +10,7 @@ GEM
     rake (0.8.7)
     rb-readline (0.4.0)
     rcov (0.9.9)
+    sfl (2.0)
 
 PLATFORMS
   ruby
@@ -20,3 +21,4 @@ DEPENDENCIES
   jeweler (~> 1.5.2)
   rb-readline
   rcov
+  sfl

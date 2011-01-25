@@ -1,5 +1,5 @@
-require_relative 'shell'
-require_relative 'util'
+require File.expand_path('../shell.rb', __FILE__)
+require File.expand_path('../util.rb', __FILE__)
 require 'readline'
 
 module Eggsh
@@ -18,11 +18,7 @@ module Eggsh
       Readline.basic_word_break_characters = ''
 
       while line = read
-        if line =~ /^(?<p>[^\{\}]*(\{\g<p>*\})*)*$/
-          @shell.exec line
-        else
-          puts 'eggsh: Unbalanced parentheses'
-        end
+        @shell.exec line
       end
     end
 
