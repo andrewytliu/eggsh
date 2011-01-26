@@ -1,5 +1,3 @@
-require 'rubygems'
-require 'sfl'
 require File.expand_path('../translator.rb', __FILE__)
 
 module Eggsh
@@ -39,10 +37,7 @@ module Eggsh
         else
           begin
             shell_line = @translator.translate(line)
-            unless shell_line.empty?
-              Kernel.spawn(@env, shell_line, :chdir => @pwd)
-              Process.wait
-            end
+            forking shell_line unless shell_line.empty?
           rescue Exception => e
             puts e.display
           end
@@ -51,6 +46,16 @@ module Eggsh
     end
 
   private
+    def forking line
+      # FIXME: this is a dirty fix
+      if RUBY_VERSION < '1.9'
+        system "cd #{@pwd}; #{line}"
+      else
+        spawn @env, line, :chdir => @pwd
+        Process.wait
+      end
+    end
+
     def pwd arg = ''
       short = @pwd.sub(/^#{ENV['HOME']}/, '~').split '/'
       (0...(short.size - 1)).each {|i| short[i] = short[i][0..0]}
