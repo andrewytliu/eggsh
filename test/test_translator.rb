@@ -26,13 +26,13 @@ describe 'translator' do
     @translator.translate('{(0..2).to_a.map{|i| i + 1}.map{|i| i + 1}.join}').should.equal '234'
   end
 
-  it 'should no return with {>}' do
-    @translator.translate('{> 123 }').should.equal ''
+  it 'should no return with {?}' do
+    @translator.translate('{? 123 }').should.equal ''
   end
 
-  it 'should execute within {>}' do
+  it 'should execute within {?}' do
     $TEST = nil
-    @translator.translate('{> $TEST = "abc"}').should.equal ''
+    @translator.translate('{? $TEST = "abc"}').should.equal ''
     $TEST.should.equal 'abc'
   end
 

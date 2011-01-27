@@ -24,7 +24,7 @@ Call 'eggsh' to start the shell.
 Settings of the shell are placed under ~/.eggshrc.
 
 {  } brackets are used to evaluate ruby expressions.
-{> } brackets are used to evaluate ruby expressions, too, except for the output
+{? } brackets are used to evaluate ruby expressions, too, except for the output
 will not be executed.
 
 == Example

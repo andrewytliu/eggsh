@@ -24,9 +24,9 @@ module Eggsh
     def eval_part line
       return '' if line.empty?
       ls = Eggsh::Ls.new
-      if line =~ /\{\>?(.*)\}/
+      if line =~ /\{\??(.*)\}/
         str = eval($1) unless line.empty?
-        if line =~ /\{\>(.*)\}/
+        if line =~ /\{\?(.*)\}/
           return nil
         else
           return str
