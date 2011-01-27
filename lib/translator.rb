@@ -1,7 +1,8 @@
 require File.expand_path('../ls.rb', __FILE__)
 
 module Eggsh
-  class Translator
+  module Translator
+    # TODO: make %| |, %< >, %( ) syntax possible
     # translate a certain line with ruby expression
     def translate line
       eval_str, result, count = "", "", 0

@@ -2,6 +2,7 @@ require File.expand_path('../translator.rb', __FILE__)
 
 module Eggsh
   class Shell
+    include Translator
     # mapping from shell commands to member function
     SHELL_CMD = {'cd' => :cd, 'pwd' => :pwd, 'fullpwd' => :full_pwd,
                  'quit' => :quit, 'exit' => :quit}
@@ -12,7 +13,6 @@ module Eggsh
     def initialize
       @env = ENV.to_hash
       @pwd = ENV['PWD']
-      @translator = Eggsh::Translator.new
     end
 
     # generating prompt
@@ -36,7 +36,7 @@ module Eggsh
         elsif line.empty?
         else
           begin
-            shell_line = @translator.translate(line)
+            shell_line = translate(line)
             forking shell_line unless shell_line.empty?
           rescue Exception => e
             puts e.display
